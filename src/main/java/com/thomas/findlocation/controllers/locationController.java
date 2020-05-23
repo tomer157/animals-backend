@@ -15,6 +15,7 @@ import com.thomas.findlocation.entities.Marker;
 
 import com.thomas.findlocation.repos.MarkersRepository;
 
+
 @RestController
 @RequestMapping("/marker")
 @CrossOrigin()
@@ -43,13 +44,20 @@ public class locationController {
 	public Marker getMarker(@PathVariable("id") int id) {
 		Marker marker = repository.findById(id).get();
 
-		return marker;  
+		return marker;
 	}
 
 	@RequestMapping(value = "/deleteall", method = RequestMethod.DELETE)
 	public void deleteAll() {
 		repository.deleteAll();
 	}
-	
+
+	@RequestMapping(value = "/deletemarker/{id}", method = RequestMethod.DELETE)
+	public Marker deleteMarker(@PathVariable("id") int id) {
+
+		Marker marker = repository.findById(id).get();
+		repository.deleteById(id);
+		return marker;
+	}
 
 }
