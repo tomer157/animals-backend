@@ -14,19 +14,32 @@ public class Marker {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private String id;
 	private double x_coord;
 	private double y_coord;
 	private String coord_description;
 	private String Animal_description;
+	public String file;
+	
 
 	private int severity;
+	
+	
+	
+	
+	public String getFile() {
+		return file;
+	}
 
-	public int getId() {
+	public void setFile(String file) {
+		this.file = file;
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
