@@ -36,7 +36,30 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>selenium_2_53_1</groupId>
+			<artifactId>com.org.jsonobject</artifactId>
+			<version>2.53.1</version>
+			<scope>system</scope>
+			<systemPath>
+  			   C:\Users\tomer\Downloads\json-20190722.jar
+   			 </systemPath>
+		</dependency>
+		
+			
+			<dependency>
+			<groupId>selenium_2_53_1</groupId>
+			<artifactId>org.javatuples.Pair</artifactId>
+			<version>2.53.1</version>
+			<scope>system</scope>
+			<systemPath>
+  			 C:\Users\tomer\Downloads\javatuples-1.2-dist\javatuples-1.2\dist\javatuples-1.2.jar
+   			 </systemPath>
+		</dependency>
+		
+			
+			
+			
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>

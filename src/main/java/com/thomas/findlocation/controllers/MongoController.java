@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.javatuples.Pair;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -20,6 +22,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.thomas.findlocation.entities.Marker;
 import com.thomas.findlocation.repos.*;
+import com.thomas.findlocation.weather.WeatherApi;
 
 @RestController
 @RequestMapping("/markers")
@@ -77,5 +80,18 @@ public class MongoController {
 		Marker marker = repos.findById(id).get();
 		repos.deleteById(id);
 		return marker;
+	}
+	
+	
+	
+	@RequestMapping(value="/weatherapi",method = RequestMethod.GET)
+	public Pair getWeather() {
+		Pair<Double , Double>pair = null;
+		try {
+			pair =WeatherApi.parseWith();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return pair;
 	}
 }
