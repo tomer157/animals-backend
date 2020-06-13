@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
 import com.thomas.findlocation.entities.CityEntity;
 import com.thomas.findlocation.entities.ClimateModel;
+import com.thomas.findlocation.entities.RainObject;
 
 import java.net.*;
 
@@ -28,7 +29,7 @@ public class WeatherApi {
 	public static List<String> list4 = new ArrayList<>();
 	public static List<String> list5 = new ArrayList<>();
 	public static ClimateModel climateModel = new ClimateModel();
-
+	private static List<RainObject> rainList = new ArrayList<RainObject>();
 	public static JSONObject jo = null;
 	private static List<CityEntity> cityList = new ArrayList<>();
 
@@ -123,11 +124,16 @@ public class WeatherApi {
 					double lat = (double) cityOBJ.getJSONObject("coord").get("lat");
 
 					double lng = (double) cityOBJ.getJSONObject("coord").get("lon");
-					climateModel.setIsRainLat(lat);
-					climateModel.setIsRainLng(lng);
+					
+					RainObject r = new RainObject(lat,lng);
+					rainList.add(r);
+					
+					
+					
 				}
 
 			}
+			climateModel.setListofRain(rainList);
 
 		} catch (Exception e) {
 			e.printStackTrace();

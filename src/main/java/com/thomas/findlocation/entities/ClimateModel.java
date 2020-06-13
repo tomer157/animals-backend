@@ -1,5 +1,8 @@
 package com.thomas.findlocation.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClimateModel {
 	double maxTempLat = 0;
 	double maxTempLng = 0;
@@ -7,24 +10,23 @@ public class ClimateModel {
 	double minTempLat = 0;
 	double minTempLng = 0;
 
-	double isRainLat = 0;
-	double isRainLng = 0;
+	List<RainObject> listofRain = new ArrayList<RainObject>();
 
-	public ClimateModel(double maxTempLat, double maxTempLng, double minTempLat, double minTempLng, double isRainLat,
-			double isRainLng) {
+	public ClimateModel(double maxTempLat, double maxTempLng, double minTempLat, double minTempLng,
+			List<RainObject> list) {
 		super();
 		this.maxTempLat = maxTempLat;
 		this.maxTempLng = maxTempLng;
 		this.minTempLat = minTempLat;
 		this.minTempLng = minTempLng;
-		this.isRainLat = isRainLat;
-		this.isRainLng = isRainLng;
+		this.listofRain = list;
+
 	}
-	
+
 	public ClimateModel() {
-		
+
 	}
-	
+
 	public double getMaxTempLat() {
 		return maxTempLat;
 	}
@@ -57,20 +59,12 @@ public class ClimateModel {
 		this.minTempLng = minTempLng;
 	}
 
-	public double getIsRainLat() {
-		return isRainLat;
+	public List<RainObject> getListofRain() {
+		return listofRain;
 	}
 
-	public void setIsRainLat(double isRainLat) {
-		this.isRainLat = isRainLat;
-	}
-
-	public double getIsRainLng() {
-		return isRainLng;
-	}
-
-	public void setIsRainLng(double isRainLng) {
-		this.isRainLng = isRainLng;
+	public void setListofRain(List<RainObject> listofRain) {
+		this.listofRain = listofRain;
 	}
 
 }
