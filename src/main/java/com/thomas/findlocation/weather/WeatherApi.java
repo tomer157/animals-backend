@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.aspectj.weaver.NewParentTypeMunger;
-import org.javatuples.Pair;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
 import com.thomas.findlocation.entities.CityEntity;
+import com.thomas.findlocation.entities.ClimateModel;
 
 import java.net.*;
 
@@ -26,6 +27,7 @@ public class WeatherApi {
 	public static List<String> list3 = new ArrayList<>();
 	public static List<String> list4 = new ArrayList<>();
 	public static List<String> list5 = new ArrayList<>();
+	public static ClimateModel climateModel = new ClimateModel();
 
 	public static JSONObject jo = null;
 	private static List<CityEntity> cityList = new ArrayList<>();
@@ -35,13 +37,13 @@ public class WeatherApi {
 //		
 	static JSONObject js = new JSONObject();
 
-	private static double firstMin_temp = 0;
-	private static double firstMax_temp = 0;
+	private static double firstMin_temp = 7.0;
+	private static double firstMax_temp = 30.0;
 	private static String selectedCity = null;
 	private static String population = null;
 	public static String city = "New York";
 	public static String cityName = null;
-	private static Pair<Double, Double> pair;
+	
 
 //		public static StringBuffer responseContent = new StringBuffer();
 
@@ -50,7 +52,7 @@ public class WeatherApi {
 
 	}
 
-	public static Pair parse(String responseBody) throws InterruptedException {
+	public static ClimateModel parse(String responseBody) throws InterruptedException {
 
 		try {
 			System.out.println("res " + responseBody);
@@ -98,13 +100,32 @@ public class WeatherApi {
 					double lng = (double) cityOBJ.getJSONObject("coord").get("lon");
 
 					System.out.println("lat  " + lat + "  " + lng);
-					pair = new Pair<Double, Double>(lat, lng);
-					System.out.println("pari " + pair.getValue0());
-					// youll need selectedcity and firstmax
+					climateModel.setMaxTempLat(lat);
+					climateModel.setMaxTempLng(lng);
+
+				
+					
+
+				}
+				if (firstMin_temp > main.getDouble("temp_min")) {
+					firstMin_temp = main.getDouble("temp_min");
+
+					double lat = (double) cityOBJ.getJSONObject("coord").get("lat");
+
+					double lng = (double) cityOBJ.getJSONObject("coord").get("lon");
+
+					climateModel.setMinTempLat(lat);
+					climateModel.setMinTempLng(lng);
 
 				}
 
-//						firstMin_temp = main.getDouble("temp_min");
+				if (!rain.isEmpty()) {
+					double lat = (double) cityOBJ.getJSONObject("coord").get("lat");
+
+					double lng = (double) cityOBJ.getJSONObject("coord").get("lon");
+					climateModel.setIsRainLat(lat);
+					climateModel.setIsRainLng(lng);
+				}
 
 			}
 
@@ -112,19 +133,17 @@ public class WeatherApi {
 			e.printStackTrace();
 
 		}
-		return pair;
+		System.out.println("cliamte mo "+climateModel.getMaxTempLat());
+		return climateModel;
 
 	}
-	
-	
-	
-	
-	public static Pair parseWith() throws InterruptedException {
+
+	public static ClimateModel parseWith() throws InterruptedException {
 		BufferedReader reader;
 		String line;
-		String[] cities = { "Tel aviv", "Eilat", "ramat gan" };
-		Pair<Double, Double>newPair = new Pair<Double, Double>(null, null);
-		
+		String[] cities = { "Tel aviv", "Eilat", "ramat gan","Rehovot",
+				"qiryat shemona","haifa","nablus","jericho","netanya","tiberias","jerusalem","beit she'an" };
+		ClimateModel c= new ClimateModel();
 
 		try {
 			for (int k = 0; k < cities.length; k++) {
@@ -160,9 +179,9 @@ public class WeatherApi {
 				}
 
 				System.out.println(responseContent.toString());
-
-				newPair = 	parse(responseContent.toString());
-				System.out.println("new pair  "+newPair);
+				
+				c = parse(responseContent.toString());
+				
 
 //				
 
@@ -173,10 +192,9 @@ public class WeatherApi {
 		} finally {
 			connection.disconnect();
 		}
-		
-		return newPair;
-		
-		
+
+		return c;
+
 	}
 
 }

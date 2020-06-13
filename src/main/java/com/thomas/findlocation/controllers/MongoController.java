@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.thomas.findlocation.entities.ClimateModel;
 import com.thomas.findlocation.entities.Marker;
 import com.thomas.findlocation.repos.*;
 import com.thomas.findlocation.weather.WeatherApi;
@@ -85,13 +86,13 @@ public class MongoController {
 	
 	
 	@RequestMapping(value="/weatherapi",method = RequestMethod.GET)
-	public Pair getWeather() {
-		Pair<Double , Double>pair = null;
+	public ClimateModel getWeather() {
+	ClimateModel c  = new ClimateModel();
 		try {
-			pair =WeatherApi.parseWith();
+			c =WeatherApi.parseWith();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return pair;
+		return c;
 	}
 }
