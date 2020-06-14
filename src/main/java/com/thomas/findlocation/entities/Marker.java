@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Entity
@@ -22,7 +24,7 @@ public class Marker {
 	private double y_coord;
 	private String coord_description;
 	private String Animal_description;
-	public String file;
+	private String file;
 	
 
 	private int severity;

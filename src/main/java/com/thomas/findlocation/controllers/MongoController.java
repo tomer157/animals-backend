@@ -3,6 +3,7 @@ package com.thomas.findlocation.controllers;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.javatuples.Pair;
@@ -54,11 +55,14 @@ public class MongoController {
 
 		InputStream inputStream = new FileInputStream(
 				"C:\\dev\\findLocation\\herelocation api\\images\\animalIcon.png");
+
+		InputStream in = new FileInputStream("C:\\dev\\findLocation\\admin_page\\admin-page\\public\\logo192.png");
+
 		metadata.put("type", "image");
 
 		// store to mongodb
-
-		fileId = gridOperations.store(inputStream, "image/png", metadata).get().toString();
+		List<InputStream> fileList = new ArrayList<InputStream>();
+//		fileId = gridOperations.find(query);     (in, "image/png", metadata).get().toString();
 
 		System.out.println("file id stored: " + fileId);
 
@@ -77,20 +81,26 @@ public class MongoController {
 	@RequestMapping(value = "/deletemarkers/{id}", method = RequestMethod.DELETE)
 	public Marker deleteMarker(@PathVariable("id") String id) {
 
-		
 		Marker marker = repos.findById(id).get();
 		repos.deleteById(id);
 		return marker;
 	}
 	
 	
+	@RequestMapping(value="deleteall",method = RequestMethod.DELETE)
+	public void deleteMarkers() {
+		repos.deleteAll();
+		
+	}
 	
-	@RequestMapping(value="/weatherapi",method = RequestMethod.GET)
+	
+
+	@RequestMapping(value = "/weatherapi", method = RequestMethod.GET)
 	public ClimateModel getWeather() {
-	ClimateModel c  = new ClimateModel();
+		ClimateModel c = new ClimateModel();
 		try {
-			c =WeatherApi.parseWith();
-		}catch(Exception e) {
+			c = WeatherApi.parseWith();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return c;
