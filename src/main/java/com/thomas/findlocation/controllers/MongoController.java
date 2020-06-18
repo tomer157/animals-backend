@@ -17,12 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.thomas.findlocation.entities.ClimateModel;
 import com.thomas.findlocation.entities.Marker;
+import com.thomas.findlocation.entities.RescueEntity;
+import com.thomas.findlocation.entities.Status;
 import com.thomas.findlocation.repos.*;
 import com.thomas.findlocation.weather.WeatherApi;
 
@@ -34,12 +37,17 @@ public class MongoController {
 	private GridFsOperations gridOperations;
 
 	private CustomerRepository repos;
+	private RescueRepository rescueRepos;
 
 	@Autowired
-	MongoController(CustomerRepository repo) {
+	MongoController(CustomerRepository repo , RescueRepository resc) {
 		this.repos = repo;
+		this.rescueRepos = resc;
 
 	}
+	
+	
+	
 
 	@RequestMapping(value = "/getmarkers", method = RequestMethod.GET)
 	public List<Marker> getMarkers() {
@@ -75,6 +83,18 @@ public class MongoController {
 //		String file = saveFile();
 //		dataRequest.setFile(file);
 		return repos.save(dataRequest);
+
+	}
+	
+	
+	@RequestMapping(value = "/addrescue/{status}", method = RequestMethod.POST)
+	public RescueEntity saveRescue(@RequestBody RescueEntity dataRequest, @PathVariable("status") Status status  ,@RequestParam("pickup") String param) throws FileNotFoundException {
+		RescueEntity res = new RescueEntity();
+		
+		res	= dataRequest;
+		res.setPickupDescription(param);
+		res.setStatus(status);
+		return rescueRepos.save(res);
 
 	}
 

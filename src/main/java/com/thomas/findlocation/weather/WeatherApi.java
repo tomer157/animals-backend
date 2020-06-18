@@ -17,6 +17,9 @@ import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
 import com.thomas.findlocation.entities.CityEntity;
 import com.thomas.findlocation.entities.ClimateModel;
 import com.thomas.findlocation.entities.RainObject;
+import com.thomas.findlocation.entities.TempObject;
+
+import javafx.util.Pair;
 
 import java.net.*;
 
@@ -32,6 +35,7 @@ public class WeatherApi {
 	private static List<RainObject> rainList = new ArrayList<RainObject>();
 	public static JSONObject jo = null;
 	private static List<CityEntity> cityList = new ArrayList<>();
+	private static List<TempObject>listTemp = new ArrayList<>();
 
 	////////////////////// min_temp ,max //////cities with rain array
 //		public static Triplet<String, String, List<String>> tripletOne = new Triplet<String, String, List<String>>("", "",
@@ -93,7 +97,7 @@ public class WeatherApi {
 				cityList.add(new CityEntity(cityName, main.getDouble("temp_max")));
 
 				if (firstMax_temp < main.getDouble("temp_max")) {
-					firstMax_temp = main.getDouble("temp_max");
+//					firstMax_temp = main.getDouble("temp_max");
 					selectedCity = cityName;
 					String pop = population;
 					double lat = (double) cityOBJ.getJSONObject("coord").get("lat");
@@ -103,6 +107,11 @@ public class WeatherApi {
 					System.out.println("lat  " + lat + "  " + lng);
 					climateModel.setMaxTempLat(lat);
 					climateModel.setMaxTempLng(lng);
+					
+					TempObject tempObj = new TempObject(lat,lng);
+					listTemp.add(tempObj);
+					
+					
 
 				
 					
@@ -134,6 +143,8 @@ public class WeatherApi {
 
 			}
 			climateModel.setListofRain(rainList);
+			climateModel.setPairList(listTemp);
+			System.out.println(listTemp.size());
 
 		} catch (Exception e) {
 			e.printStackTrace();
