@@ -12,6 +12,7 @@ public class ClimateModel {
 	double minTempLat = 0;
 	double minTempLng = 0;
 	 List<TempObject> pairList = new ArrayList<>();
+	 List<TempObject> pairListMin = new ArrayList<>();
 
 	List<RainObject> listofRain = new ArrayList<RainObject>();
 
@@ -35,6 +36,15 @@ public class ClimateModel {
 	}
 	
 	
+	
+
+	public List<TempObject> getPairListMin() {
+		return pairListMin;
+	}
+
+	public void setPairListMin(List<TempObject> pairListMin) {
+		this.pairListMin = pairListMin;
+	}
 
 	public List<TempObject> getPairList() {
 		return pairList;

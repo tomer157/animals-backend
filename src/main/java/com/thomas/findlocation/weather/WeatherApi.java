@@ -36,6 +36,7 @@ public class WeatherApi {
 	public static JSONObject jo = null;
 	private static List<CityEntity> cityList = new ArrayList<>();
 	private static List<TempObject>listTemp = new ArrayList<>();
+	private static List<TempObject>listTempMin = new ArrayList<>();
 
 	////////////////////// min_temp ,max //////cities with rain array
 //		public static Triplet<String, String, List<String>> tripletOne = new Triplet<String, String, List<String>>("", "",
@@ -118,7 +119,7 @@ public class WeatherApi {
 
 				}
 				if (firstMin_temp > main.getDouble("temp_min")) {
-					firstMin_temp = main.getDouble("temp_min");
+//					firstMin_temp = main.getDouble("temp_min");
 
 					double lat = (double) cityOBJ.getJSONObject("coord").get("lat");
 
@@ -126,6 +127,9 @@ public class WeatherApi {
 
 					climateModel.setMinTempLat(lat);
 					climateModel.setMinTempLng(lng);
+					TempObject tempObj = new TempObject(lat,lng);
+					listTempMin.add(tempObj);
+					
 
 				}
 
@@ -144,6 +148,8 @@ public class WeatherApi {
 			}
 			climateModel.setListofRain(rainList);
 			climateModel.setPairList(listTemp);
+			climateModel.setPairListMin(listTempMin);
+			
 			System.out.println(listTemp.size());
 
 		} catch (Exception e) {
