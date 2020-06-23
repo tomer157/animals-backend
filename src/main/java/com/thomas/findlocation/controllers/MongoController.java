@@ -40,14 +40,11 @@ public class MongoController {
 	private RescueRepository rescueRepos;
 
 	@Autowired
-	MongoController(CustomerRepository repo , RescueRepository resc) {
+	MongoController(CustomerRepository repo, RescueRepository resc) {
 		this.repos = repo;
 		this.rescueRepos = resc;
 
 	}
-	
-	
-	
 
 	@RequestMapping(value = "/getmarkers", method = RequestMethod.GET)
 	public List<Marker> getMarkers() {
@@ -85,18 +82,53 @@ public class MongoController {
 		return repos.save(dataRequest);
 
 	}
-	
-	
+
 	@RequestMapping(value = "/addrescue/{status}", method = RequestMethod.POST)
-	public RescueEntity saveRescue(@RequestBody RescueEntity dataRequest, @PathVariable("status") Status status  ,@RequestParam("pickup") String param) throws FileNotFoundException {
+	public RescueEntity saveRescue(@RequestBody RescueEntity dataRequest, @PathVariable("status") Status status,
+			@RequestParam("pickup") String param) throws FileNotFoundException {
 		RescueEntity res = new RescueEntity();
-		
-		res	= dataRequest;
+
+		res = dataRequest;
 		res.setPickupDescription(param);
 		res.setStatus(status);
 		return rescueRepos.save(res);
 
 	}
+
+	@RequestMapping(value = "/getrescued", method = RequestMethod.GET)
+	public List<RescueEntity> getAllRescued() {
+		List<RescueEntity> list = rescueRepos.findAll();
+		return list;
+	}
+	
+	@RequestMapping(value = "deleterescue" , method = RequestMethod.DELETE)
+	public void deleteRescue() {
+		rescueRepos.deleteAll();
+	}
+	
+	@RequestMapping(value = "/deleterescue/{id}", method = RequestMethod.DELETE)
+	public RescueEntity deleteRescueById(@PathVariable("id") String id) {
+
+		RescueEntity res = rescueRepos.findById(id).get();
+		rescueRepos.deleteById(id);
+		return res;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@RequestMapping(value = "/deletemarkers/{id}", method = RequestMethod.DELETE)
 	public Marker deleteMarker(@PathVariable("id") String id) {
@@ -105,15 +137,12 @@ public class MongoController {
 		repos.deleteById(id);
 		return marker;
 	}
-	
-	
-	@RequestMapping(value="deleteall",method = RequestMethod.DELETE)
+
+	@RequestMapping(value = "deleteall", method = RequestMethod.DELETE)
 	public void deleteMarkers() {
 		repos.deleteAll();
-		
+
 	}
-	
-	
 
 	@RequestMapping(value = "/weatherapi", method = RequestMethod.GET)
 	public ClimateModel getWeather() {
