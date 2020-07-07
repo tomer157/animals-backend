@@ -24,7 +24,7 @@ public class Marker {
 	private double y_coord;
 	private String coord_description;
 	private String Animal_description;
-	private String file;
+	private String[] file;
 	
 
 	private int severity;
@@ -32,11 +32,11 @@ public class Marker {
 	
 	
 	
-	public String getFile() {
+	public String[] getFile() {
 		return file;
 	}
 
-	public void setFile(String file) {
+	public void setFile(String[] file) {
 		this.file = file;
 	}
 
