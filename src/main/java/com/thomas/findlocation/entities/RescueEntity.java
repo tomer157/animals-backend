@@ -19,14 +19,14 @@ public class RescueEntity {
 	private double y_coord;
 	private String coord_description;
 	private String Animal_description;
-	private String file;
+	private String[] file;
 	private Status status;
 	private String pickupDescription;
 
 	private int severity;
 
 	public RescueEntity(String id, double x_coord, double y_coord, String coord_description, String animal_description,
-			String file, int severity, Status status,String pickupDesc) {
+			String[] file, int severity, Status status,String pickupDesc) {
 		super();
 		this.id = id;
 		this.x_coord = x_coord;
@@ -101,11 +101,11 @@ public class RescueEntity {
 		Animal_description = animal_description;
 	}
 
-	public String getFile() {
+	public String[] getFile() {
 		return file;
 	}
 
-	public void setFile(String file) {
+	public void setFile(String[] file) {
 		this.file = file;
 	}
 

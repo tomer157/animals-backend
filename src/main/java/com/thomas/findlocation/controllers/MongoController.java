@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.NamingException;
+
 import org.javatuples.Pair;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.thomas.findlocation.entities.ClimateModel;
+import com.thomas.findlocation.entities.Foster;
 import com.thomas.findlocation.entities.Marker;
 import com.thomas.findlocation.entities.RescueEntity;
+import com.thomas.findlocation.entities.RescueTuple;
 import com.thomas.findlocation.entities.Status;
 import com.thomas.findlocation.repos.*;
 import com.thomas.findlocation.weather.WeatherApi;
+
+import queue.QueueApp;
 
 @RestController
 @RequestMapping("/markers")
@@ -100,12 +106,12 @@ public class MongoController {
 		List<RescueEntity> list = rescueRepos.findAll();
 		return list;
 	}
-	
-	@RequestMapping(value = "deleterescue" , method = RequestMethod.DELETE)
+
+	@RequestMapping(value = "deleterescue", method = RequestMethod.DELETE)
 	public void deleteRescue() {
 		rescueRepos.deleteAll();
 	}
-	
+
 	@RequestMapping(value = "/deleterescue/{id}", method = RequestMethod.DELETE)
 	public RescueEntity deleteRescueById(@PathVariable("id") String id) {
 
@@ -116,13 +122,31 @@ public class MongoController {
 	
 	
 	
+	@RequestMapping(value = "/deleterescutofoster/{id}", method = RequestMethod.DELETE)
+	public RescueEntity deleteToFoster(@PathVariable("id") String id) {
+		RescueEntity res = rescueRepos.findById(id).get();
+		try {
 	
-	
-	
-	
-	
-	
-	
+		
+		
+		RescueTuple tuple  =  new RescueTuple(res.getAnimal_description(), res.getFile());
+		
+		
+			QueueApp.setQueue(tuple);
+			
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		rescueRepos.deleteById(id);
+		
+		
+		
+		
+		return res;
+	}
 	
 	
 	
