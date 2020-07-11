@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class RescueTuple  implements Serializable{
 	public String animal_Description;
-	public String file;
+	public String[] file;
 
 	public RescueTuple() {
 
 	}
 
-	public RescueTuple(String animal_Description, String file) {
+	public RescueTuple(String animal_Description, String[] file) {
 		super();
 		this.animal_Description = animal_Description;
 		this.file = file;
@@ -24,11 +24,11 @@ public class RescueTuple  implements Serializable{
 		this.animal_Description = animal_Description;
 	}
 
-	public String getFile() {
+	public String[] getFile() {
 		return file;
 	}
 
-	public void setFile(String file) {
+	public void setFile(String[] file) {
 		this.file = file;
 	}
 
