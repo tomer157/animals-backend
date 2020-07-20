@@ -7,12 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingException;
+import javax.swing.Spring;
 
 import org.javatuples.Pair;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -33,12 +37,18 @@ import com.thomas.findlocation.entities.Status;
 import com.thomas.findlocation.repos.*;
 import com.thomas.findlocation.weather.WeatherApi;
 
-import queue.QueueApp;
-
 @RestController
 @RequestMapping("/markers")
 @CrossOrigin()
 public class MongoController {
+	@Bean
+	public RestTemplate getRestTemplate() {
+		return new RestTemplate();
+	}
+
+	@Autowired
+	private RestTemplate restTemplate;
+
 	@Autowired
 	private GridFsOperations gridOperations;
 
@@ -119,40 +129,17 @@ public class MongoController {
 		rescueRepos.deleteById(id);
 		return res;
 	}
-	
-	
-	
+
 	@RequestMapping(value = "/deleterescutofoster/{id}", method = RequestMethod.DELETE)
-	public RescueEntity deleteToFoster(@PathVariable("id") String id) {
+	public RescueEntity deleteToFoster(@RequestBody Foster dataRequest, @PathVariable("id") String id) {
 		RescueEntity res = rescueRepos.findById(id).get();
-		try {
-	
-		
-		
-		RescueTuple tuple  =  new RescueTuple(res.getAnimal_description(), res.getFile());
-		
-		
-			QueueApp.setQueue(tuple);
-			
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
-		
-		
-		
 		rescueRepos.deleteById(id);
-		
-		
-		
-		
+
+		restTemplate.exchange("http://127.0.0.1:8081/api/fosters/savefoster", HttpMethod.POST, null,
+				dataRequest.getClass());
+
 		return res;
 	}
-	
-	
-	
-	
-	
-	
 
 	@RequestMapping(value = "/deletemarkers/{id}", method = RequestMethod.DELETE)
 	public Marker deleteMarker(@PathVariable("id") String id) {
