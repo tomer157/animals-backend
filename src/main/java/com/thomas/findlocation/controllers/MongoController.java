@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,8 +35,11 @@ import com.thomas.findlocation.entities.Marker;
 import com.thomas.findlocation.entities.RescueEntity;
 import com.thomas.findlocation.entities.RescueTuple;
 import com.thomas.findlocation.entities.Status;
+import com.thomas.findlocation.entities.Users;
 import com.thomas.findlocation.repos.*;
 import com.thomas.findlocation.weather.WeatherApi;
+
+import service.UserServiceImpl;
 
 @RestController
 @RequestMapping("/markers")
@@ -54,11 +58,13 @@ public class MongoController {
 
 	private CustomerRepository repos;
 	private RescueRepository rescueRepos;
+	private UserDao userDao;
 
 	@Autowired
-	MongoController(CustomerRepository repo, RescueRepository resc) {
+	MongoController(CustomerRepository repo, RescueRepository resc, UserDao userDao) {
 		this.repos = repo;
 		this.rescueRepos = resc;
+		this.userDao = userDao;
 
 	}
 
@@ -164,5 +170,20 @@ public class MongoController {
 			e.printStackTrace();
 		}
 		return c;
+	}
+
+	@RequestMapping(value = "/getuser/{user}", method = RequestMethod.GET)
+	public String getUser(@PathVariable("user") String user, @RequestParam("password") String password) {
+
+		Users userId = userDao.findByUsername(user);
+
+		if (userId.getPassword().equals(password)) {
+			return userId.getRole();
+		} else {
+			throw new ResourceNotFoundException();
+		}
+
+		
+
 	}
 }
