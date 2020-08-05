@@ -168,7 +168,7 @@ public class WeatherApi {
 				"qiryat shemona","haifa","nablus","jericho","netanya","tiberias","jerusalem","beit she'an","acre","afula","arad","arraba","ashdod","Ashkelon","Baqa al-Gharbiyye"
 				,"Bat Yam","Beersheba","Beit Shemesh","Bnei Brak","Dimona","El'ad","Giv'at Shmuel","Givatayim","Hadera","Herzliya","Hod HaSharon","Holon","Kafr Qasim","Karmiel","Kfar Saba",
 				"Kfar Yona","Kiryat Ata","Kiryat Bialik","Kiryat Gat","Kiryat Malakhi","Lod","Ma'alot-Tarshiha","Migdal HaEmek","Modi'in-Maccabim-Re'ut","Nahariya"
-				,"Netivot","Umm al-Fahm","sde boker","mitzpe ramon","nitzana"};
+				,"Netivot","Umm al-Fahm","sde boker","Mitzpe Ramon","Nitzana"};
 		ClimateModel c= new ClimateModel();
 
 		try {
