@@ -165,7 +165,10 @@ public class WeatherApi {
 		BufferedReader reader;
 		String line;
 		String[] cities = { "Tel aviv", "Eilat", "ramat gan","Rehovot",
-				"qiryat shemona","haifa","nablus","jericho","netanya","tiberias","jerusalem","beit she'an" };
+				"qiryat shemona","haifa","nablus","jericho","netanya","tiberias","jerusalem","beit she'an","acre","afula","arad","arraba","ashdod","Ashkelon","Baqa al-Gharbiyye"
+				,"Bat Yam","Beersheba","Beit Shemesh","Bnei Brak","Dimona","El'ad","Giv'at Shmuel","Givatayim","Hadera","Herzliya","Hod HaSharon","Holon","Kafr Qasim","Karmiel","Kfar Saba",
+				"Kfar Yona","Kiryat Ata","Kiryat Bialik","Kiryat Gat","Kiryat Malakhi","Lod","Ma'alot-Tarshiha","Migdal HaEmek","Modi'in-Maccabim-Re'ut","Nahariya"
+				,"Netivot","Umm al-Fahm","sde boker","mitzpe ramon","nitzana"};
 		ClimateModel c= new ClimateModel();
 
 		try {
