@@ -136,16 +136,16 @@ public class MongoController {
 		return res;
 	}
 
-//	@RequestMapping(value = "/deleterescutofoster/{id}", method = RequestMethod.DELETE)
-//	public RescueEntity deleteToFoster(@RequestBody Foster dataRequest, @PathVariable("id") String id) {
-//		RescueEntity res = rescueRepos.findById(id).get();
-//		rescueRepos.deleteById(id);
-//
-//		restTemplate.exchange("http://127.0.0.1:8081/api/fosters/savefoster", HttpMethod.POST, null,
-//				dataRequest.getClass());
-//
-//		return res;
-//	}
+	@RequestMapping(value = "/deleterescutofoster/{id}", method = RequestMethod.DELETE)
+	public RescueEntity deleteToFoster(@RequestBody Foster dataRequest, @PathVariable("id") String id) {
+		RescueEntity res = rescueRepos.findById(id).get();
+		rescueRepos.deleteById(id);
+
+		restTemplate.exchange("http://127.0.0.1:8081/api/fosters/savefoster", HttpMethod.POST, null,
+				dataRequest.getClass());
+
+		return res;
+	}
 
 	@RequestMapping(value = "/deletemarkers/{id}", method = RequestMethod.DELETE)
 	public Marker deleteMarker(@PathVariable("id") String id) {
