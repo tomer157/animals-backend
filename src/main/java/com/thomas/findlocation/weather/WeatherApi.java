@@ -43,7 +43,7 @@ public class WeatherApi {
 //		
 	static JSONObject js = new JSONObject();
 
-	private static double firstMin_temp = 7.0;
+	private static double firstMin_temp = 9.0;
 	private static double firstMax_temp = 30.0;
 	private static String selectedCity = null;
 	private static String population = null;
