@@ -11,19 +11,21 @@ public class ClimateModel {
 
 	double minTempLat = 0;
 	double minTempLng = 0;
-	 List<TempObject> pairList = new ArrayList<>();
-	 List<TempObject> pairListMin = new ArrayList<>();
+	List<TempObject> pairList = new ArrayList<>();
+	List<TempObject> pairListMin = new ArrayList<>();
 
 	List<RainObject> listofRain = new ArrayList<RainObject>();
+	List<WindObject> listOfWinds = new ArrayList<WindObject>();
 
 	public ClimateModel(double maxTempLat, double maxTempLng, double minTempLat, double minTempLng,
-			List<RainObject> list) {
+			List<RainObject> list, List<WindObject> windList) {
 		super();
 		this.maxTempLat = maxTempLat;
 		this.maxTempLng = maxTempLng;
 		this.minTempLat = minTempLat;
 		this.minTempLng = minTempLng;
 		this.listofRain = list;
+		this.listOfWinds = windList;
 
 	}
 
@@ -34,9 +36,6 @@ public class ClimateModel {
 	public double getMaxTempLat() {
 		return maxTempLat;
 	}
-	
-	
-	
 
 	public List<TempObject> getPairListMin() {
 		return pairListMin;
@@ -88,6 +87,14 @@ public class ClimateModel {
 
 	public void setListofRain(List<RainObject> listofRain) {
 		this.listofRain = listofRain;
+	}
+
+	public List<WindObject> getListOfWinds() {
+		return listOfWinds;
+	}
+
+	public void setListOfWind(List<WindObject> listofWind) {
+		this.listOfWinds = listofWind;
 	}
 
 }

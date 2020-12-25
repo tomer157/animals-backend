@@ -18,6 +18,7 @@ import com.thomas.findlocation.entities.CityEntity;
 import com.thomas.findlocation.entities.ClimateModel;
 import com.thomas.findlocation.entities.RainObject;
 import com.thomas.findlocation.entities.TempObject;
+import com.thomas.findlocation.entities.WindObject;
 
 import javafx.util.Pair;
 
@@ -33,10 +34,11 @@ public class WeatherApi {
 	public static List<String> list5 = new ArrayList<>();
 	public static ClimateModel climateModel = new ClimateModel();
 	private static List<RainObject> rainList = new ArrayList<RainObject>();
+	private static List<WindObject> windList = new ArrayList<WindObject>();
 	public static JSONObject jo = null;
 	private static List<CityEntity> cityList = new ArrayList<>();
-	private static List<TempObject>listTemp = new ArrayList<>();
-	private static List<TempObject>listTempMin = new ArrayList<>();
+	private static List<TempObject> listTemp = new ArrayList<>();
+	private static List<TempObject> listTempMin = new ArrayList<>();
 
 	////////////////////// min_temp ,max //////cities with rain array
 //		public static Triplet<String, String, List<String>> tripletOne = new Triplet<String, String, List<String>>("", "",
@@ -49,7 +51,6 @@ public class WeatherApi {
 	private static String population = null;
 	public static String city = "New York";
 	public static String cityName = null;
-	
 
 //		public static StringBuffer responseContent = new StringBuffer();
 
@@ -83,10 +84,18 @@ public class WeatherApi {
 				JSONObject weather = listObject.getJSONArray("weather").getJSONObject(0);
 				String weatherMain = weather.getString("main");
 				String weatherDesc = weather.getString("description");
+
 				JSONObject rain = new JSONObject();
 				if (listObject.has("rain")) {
 					System.out.println("rain exiasts");
 					rain = listObject.getJSONObject("rain");
+				}
+
+				JSONObject wind = new JSONObject();
+				JSONObject windObject = listObject.getJSONObject("wind");
+				if (windObject.getInt("speed") >= 6) {
+					System.out.println("wind is : " + windObject.getInt("speed"));
+					wind = listObject.getJSONObject("wind");
 				}
 
 				System.out.println("city name ");
@@ -108,14 +117,9 @@ public class WeatherApi {
 					System.out.println("lat  " + lat + "  " + lng);
 					climateModel.setMaxTempLat(lat);
 					climateModel.setMaxTempLng(lng);
-					
-					TempObject tempObj = new TempObject(lat,lng);
-					listTemp.add(tempObj);
-					
-					
 
-				
-					
+					TempObject tempObj = new TempObject(lat, lng);
+					listTemp.add(tempObj);
 
 				}
 				if (firstMin_temp > main.getDouble("temp_min")) {
@@ -127,9 +131,8 @@ public class WeatherApi {
 
 					climateModel.setMinTempLat(lat);
 					climateModel.setMinTempLng(lng);
-					TempObject tempObj = new TempObject(lat,lng);
+					TempObject tempObj = new TempObject(lat, lng);
 					listTempMin.add(tempObj);
-					
 
 				}
 
@@ -137,26 +140,34 @@ public class WeatherApi {
 					double lat = (double) cityOBJ.getJSONObject("coord").get("lat");
 
 					double lng = (double) cityOBJ.getJSONObject("coord").get("lon");
-					
-					RainObject r = new RainObject(lat,lng);
+
+					RainObject r = new RainObject(lat, lng);
 					rainList.add(r);
-					
-					
-					
+				}
+
+				if (!wind.isEmpty()) {
+					double lat = (double) cityOBJ.getJSONObject("coord").get("lat");
+
+					double lng = (double) cityOBJ.getJSONObject("coord").get("lon");
+
+					WindObject w = new WindObject(lat, lng);
+					windList.add(w);
+
 				}
 
 			}
 			climateModel.setListofRain(rainList);
+			climateModel.setListOfWind(windList);
 			climateModel.setPairList(listTemp);
 			climateModel.setPairListMin(listTempMin);
-			
+
 			System.out.println(listTemp.size());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}
-		System.out.println("cliamte mo "+climateModel.getMaxTempLat());
+		System.out.println("cliamte mo " + climateModel.getMaxTempLat());
 		return climateModel;
 
 	}
@@ -164,12 +175,14 @@ public class WeatherApi {
 	public static ClimateModel parseWith() throws InterruptedException {
 		BufferedReader reader;
 		String line;
-		String[] cities = { "Tel aviv", "Eilat", "ramat gan","Rehovot",
-				"qiryat shemona","haifa","nablus","jericho","netanya","tiberias","jerusalem","beit she'an","acre","afula","arad","arraba","ashdod","Ashkelon","Baqa al-Gharbiyye"
-				,"Bat Yam","Beersheba","Beit Shemesh","Bnei Brak","Dimona","El'ad","Giv'at Shmuel","Givatayim","Hadera","Herzliya","Hod HaSharon","Holon","Kafr Qasim","Karmiel","Kfar Saba",
-				"Kfar Yona","Kiryat Ata","Kiryat Bialik","Kiryat Gat","Kiryat Malakhi","Lod","Ma'alot-Tarshiha","Migdal HaEmek","Modi'in-Maccabim-Re'ut","Nahariya"
-				,"Netivot","Umm al-Fahm","sde boker","Mitzpe Ramon","Nitzana"};
-		ClimateModel c= new ClimateModel();
+		String[] cities = { "Tel aviv", "Eilat", "ramat gan", "Rehovot", "qiryat shemona", "haifa", "nablus", "jericho",
+				"netanya", "tiberias", "jerusalem", "beit she'an", "acre", "afula", "arad", "arraba", "ashdod",
+				"Ashkelon", "Baqa al-Gharbiyye", "Bat Yam", "Beersheba", "Beit Shemesh", "Bnei Brak", "Dimona", "El'ad",
+				"Giv'at Shmuel", "Givatayim", "Hadera", "Herzliya", "Hod HaSharon", "Holon", "Kafr Qasim", "Karmiel",
+				"Kfar Saba", "Kfar Yona", "Kiryat Ata", "Kiryat Bialik", "Kiryat Gat", "Kiryat Malakhi", "Lod",
+				"Ma'alot-Tarshiha", "migdal", "modin", "Nahariya", "Netivot", "Umm al-Fahm", "sde boker",
+				"Mitzpe Ramon", "Nitzana" };
+		ClimateModel c = new ClimateModel();
 
 		try {
 			for (int k = 0; k < cities.length; k++) {
@@ -205,9 +218,8 @@ public class WeatherApi {
 				}
 
 				System.out.println(responseContent.toString());
-				
+
 				c = parse(responseContent.toString());
-				
 
 //				
 
