@@ -13,14 +13,14 @@ import org.aspectj.weaver.NewParentTypeMunger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
+//import com.sun.corba.se.impl.ior.NewObjectKeyTemplateBase;
 import com.thomas.findlocation.entities.CityEntity;
 import com.thomas.findlocation.entities.ClimateModel;
 import com.thomas.findlocation.entities.RainObject;
 import com.thomas.findlocation.entities.TempObject;
 import com.thomas.findlocation.entities.WindObject;
 
-import javafx.util.Pair;
+//import javafx.util.Pair;
 
 import java.net.*;
 
