@@ -73,34 +73,8 @@ public class MongoController {
 		return repos.findAll();
 	}
 
-	String fileId = "";
-
-	public String saveFile() throws FileNotFoundException {
-		// defaine metadata
-		DBObject metadata = new BasicDBObject();
-		metadata.put("organization", "java");
-
-		InputStream inputStream = new FileInputStream(
-				"C:\\dev\\findLocation\\herelocation api\\images\\animalIcon.png");
-
-		InputStream in = new FileInputStream("C:\\dev\\findLocation\\admin_page\\admin-page\\public\\logo192.png");
-
-		metadata.put("type", "image");
-
-		// store to mongodb
-		List<InputStream> fileList = new ArrayList<InputStream>();
-//		fileId = gridOperations.find(query);     (in, "image/png", metadata).get().toString();
-
-		System.out.println("file id stored: " + fileId);
-
-		return "file stored succefully";
-
-	}
-
 	@RequestMapping(value = "/addmarkers", method = RequestMethod.POST)
 	public Marker saveMarker(@RequestBody Marker dataRequest) throws FileNotFoundException {
-//		String file = saveFile();
-//		dataRequest.setFile(file);
 		return repos.save(dataRequest);
 
 	}
@@ -182,8 +156,6 @@ public class MongoController {
 		} else {
 			throw new ResourceNotFoundException();
 		}
-
-		
 
 	}
 }
