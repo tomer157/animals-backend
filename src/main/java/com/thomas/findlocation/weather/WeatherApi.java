@@ -62,19 +62,13 @@ public class WeatherApi {
 	public static ClimateModel parse(String responseBody) throws InterruptedException {
 
 		try {
-			System.out.println("res " + responseBody);
 
-			System.out.println("jo1 " + jo);
 			jo = new JSONObject(responseBody);
 
-//		  System.out.println("jo "+jo);
-
-//		    System.out.println("jo "+jo);
 			JSONObject cityOBJ = jo.getJSONObject("city");
-			System.out.println("cityobj " + cityOBJ);
+
 			cityName = cityOBJ.get("name").toString();
 			population = cityOBJ.get("population").toString();
-			System.out.println(cityName);
 
 			JSONArray listArray = jo.getJSONArray("list");
 			for (int i = 0; i < listArray.length(); i++) {
@@ -87,34 +81,29 @@ public class WeatherApi {
 
 				JSONObject rain = new JSONObject();
 				if (listObject.has("rain")) {
-					System.out.println("rain exiasts");
+
 					rain = listObject.getJSONObject("rain");
 				}
 
 				JSONObject wind = new JSONObject();
 				JSONObject windObject = listObject.getJSONObject("wind");
 				if (windObject.getInt("speed") >= 6) {
-					System.out.println("wind is : " + windObject.getInt("speed"));
+
 					wind = listObject.getJSONObject("wind");
 				}
-
-				System.out.println("city name ");
-				System.out.println(main.get("temp_min") + "index " + i);
-				System.out.println(main.get("temp_max") + "index of max " + i);
 
 				CityEntity CE = new CityEntity(cityName, main.getDouble("temp_max"));
 
 				cityList.add(new CityEntity(cityName, main.getDouble("temp_max")));
 
 				if (firstMax_temp < main.getDouble("temp_max")) {
-//					firstMax_temp = main.getDouble("temp_max");
+
 					selectedCity = cityName;
 					String pop = population;
 					double lat = (double) cityOBJ.getJSONObject("coord").get("lat");
 
 					double lng = (double) cityOBJ.getJSONObject("coord").get("lon");
 
-					System.out.println("lat  " + lat + "  " + lng);
 					climateModel.setMaxTempLat(lat);
 					climateModel.setMaxTempLng(lng);
 
@@ -123,7 +112,6 @@ public class WeatherApi {
 
 				}
 				if (firstMin_temp > main.getDouble("temp_min")) {
-//					firstMin_temp = main.getDouble("temp_min");
 
 					double lat = (double) cityOBJ.getJSONObject("coord").get("lat");
 
@@ -161,13 +149,11 @@ public class WeatherApi {
 			climateModel.setPairList(listTemp);
 			climateModel.setPairListMin(listTempMin);
 
-			System.out.println(listTemp.size());
-
 		} catch (Exception e) {
 			e.printStackTrace();
 
 		}
-		System.out.println("cliamte mo " + climateModel.getMaxTempLat());
+
 		return climateModel;
 
 	}
@@ -192,13 +178,12 @@ public class WeatherApi {
 				URL url = new URL("http://api.openweathermap.org/data/2.5/forecast?q=" + cities[k]
 						+ "&hourly&units=metric&cnt=1&appid=a3f20118eead94533603b9665190dd88");
 				connection = (HttpURLConnection) url.openConnection();
-				System.out.println("city " + cities[k]);
+
 				connection.setRequestMethod("GET");
 				connection.setConnectTimeout(5000);
 				connection.setReadTimeout(5000);
 
 				int status = connection.getResponseCode();
-				System.out.println(status);
 
 				if (status > 299) {
 					reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
@@ -206,22 +191,18 @@ public class WeatherApi {
 						responseContent.append(line);
 
 					}
-					// reader.close();
+
 				} else {
 					reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 					while ((line = reader.readLine()) != null) {
 						responseContent.append(line);
 					}
 
-					// reader.close();
+					reader.close();
 
 				}
 
-				System.out.println(responseContent.toString());
-
 				c = parse(responseContent.toString());
-
-//				
 
 			}
 
