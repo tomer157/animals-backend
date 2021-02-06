@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.gridfs.GridFsOperations;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -89,6 +90,14 @@ public class MongoController {
 		res.setStatus(status);
 		return rescueRepos.save(res);
 
+	}
+
+	@RequestMapping(value = "/updatenavigation/{id}", method = RequestMethod.PUT)
+	public Marker updateNavigate(@PathVariable("id") String id, @Param("status") String status) {
+
+		Marker marker = repos.findById(id).get();
+		marker.setNavigate_to(status);
+		return repos.save(marker);
 	}
 
 	@RequestMapping(value = "/getrescued", method = RequestMethod.GET)

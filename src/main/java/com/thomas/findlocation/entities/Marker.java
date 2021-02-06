@@ -25,13 +25,18 @@ public class Marker {
 	private String coord_description;
 	private String Animal_description;
 	private String[] file;
-	
+	private String navigate_to;
+
+	public String getNavigate_to() {
+		return navigate_to;
+	}
+
+	public void setNavigate_to(String navigate_to) {
+		this.navigate_to = navigate_to;
+	}
 
 	private int severity;
-	
-	
-	
-	
+
 	public String[] getFile() {
 		return file;
 	}
