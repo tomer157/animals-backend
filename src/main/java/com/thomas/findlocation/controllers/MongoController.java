@@ -3,7 +3,11 @@ package com.thomas.findlocation.controllers;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.naming.NamingException;
@@ -18,6 +22,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +37,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.thomas.findlocation.entities.ClimateModel;
 import com.thomas.findlocation.entities.Foster;
+import com.thomas.findlocation.entities.Hazard;
 import com.thomas.findlocation.entities.Marker;
 import com.thomas.findlocation.entities.RescueEntity;
 import com.thomas.findlocation.entities.RescueTuple;
@@ -58,14 +64,16 @@ public class MongoController {
 	private GridFsOperations gridOperations;
 
 	private CustomerRepository repos;
+	private HazardRepository hazardRepo;
 	private RescueRepository rescueRepos;
 	private UserDao userDao;
 
 	@Autowired
-	MongoController(CustomerRepository repo, RescueRepository resc, UserDao userDao) {
+	MongoController(CustomerRepository repo, RescueRepository resc, UserDao userDao, HazardRepository hazaRepo) {
 		this.repos = repo;
 		this.rescueRepos = resc;
 		this.userDao = userDao;
+		this.hazardRepo = hazaRepo;
 
 	}
 
@@ -78,6 +86,45 @@ public class MongoController {
 	public Marker saveMarker(@RequestBody Marker dataRequest) throws FileNotFoundException {
 		return repos.save(dataRequest);
 
+	}
+
+	@RequestMapping(value = "/addhazard", method = RequestMethod.POST)
+	public Hazard saveHazard(@RequestBody Hazard dataRequest) throws FileNotFoundException {
+		return hazardRepo.save(dataRequest);
+
+	}
+
+	@RequestMapping(value = "/deletehazards", method = RequestMethod.DELETE)
+	public void deleteHazards() {
+		hazardRepo.deleteAll();
+	}
+
+	@RequestMapping(value = "/gethazards", method = RequestMethod.GET)
+	public List<Hazard> getHazards() {
+		return hazardRepo.findAll();
+	}
+
+	@Scheduled(fixedRate = 60 * 1000 * 60 * 6)
+	void scheduleUpdateJob() {
+		try {
+
+			List<Marker> list = getMarkers();
+			LocalDateTime now = LocalDateTime.now();
+			for (Marker mark : list) {
+
+				LocalDateTime m = mark.getCurrentDate();
+				long diff = ChronoUnit.HOURS.between(now, m);
+
+				if (Math.abs(diff) >= 17) {
+
+					String mark_id = mark.getId();
+					updateNavigate(mark_id, "window.google.maps.Animation.DROP");
+				}
+			}
+
+		} catch (Exception e) {
+
+		}
 	}
 
 	@RequestMapping(value = "/addrescue/{status}", method = RequestMethod.POST)
@@ -95,7 +142,10 @@ public class MongoController {
 	@RequestMapping(value = "/updatenavigation/{id}", method = RequestMethod.PUT)
 	public Marker updateNavigate(@PathVariable("id") String id, @Param("status") String status) {
 
+		Calendar calendar = Calendar.getInstance();
+		LocalDateTime now = LocalDateTime.now();
 		Marker marker = repos.findById(id).get();
+		marker.setCurrentDate(now);
 		marker.setNavigate_to(status);
 		return repos.save(marker);
 	}

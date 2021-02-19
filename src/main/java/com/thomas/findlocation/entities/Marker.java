@@ -1,6 +1,8 @@
 package com.thomas.findlocation.entities;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,6 +28,7 @@ public class Marker {
 	private String Animal_description;
 	private String[] file;
 	private String navigate_to;
+	private LocalDateTime currentDate;
 
 	public String getNavigate_to() {
 		return navigate_to;
@@ -97,6 +100,14 @@ public class Marker {
 	public String toString() {
 		return "Marker [id=" + id + ", x_coord=" + x_coord + ", y_coord=" + y_coord + ", coord_description="
 				+ coord_description + "]";
+	}
+
+	public LocalDateTime getCurrentDate() {
+		return currentDate;
+	}
+
+	public void setCurrentDate(LocalDateTime currentDate) {
+		this.currentDate = currentDate;
 	}
 
 }
