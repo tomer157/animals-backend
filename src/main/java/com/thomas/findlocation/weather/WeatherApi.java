@@ -167,7 +167,7 @@ public class WeatherApi {
 				"Giv'at Shmuel", "Givatayim", "Hadera", "Herzliya", "Hod HaSharon", "Holon", "Kafr Qasim", "Karmiel",
 				"Kfar Saba", "Kfar Yona", "Kiryat Ata", "Kiryat Bialik", "Kiryat Gat", "Kiryat Malakhi", "Lod",
 				"Ma'alot-Tarshiha", "migdal", "modin", "Nahariya", "Netivot", "Umm al-Fahm", "sde boker",
-				"Mitzpe Ramon", "Nitzana" };
+				"Mitzpe Ramon", "Nitzana", "hod hasharon", "bat yam" };
 		ClimateModel c = new ClimateModel();
 
 		try {
