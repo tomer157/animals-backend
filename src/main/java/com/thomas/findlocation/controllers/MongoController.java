@@ -104,10 +104,10 @@ public class MongoController {
 		return hazardRepo.findAll();
 	}
 
-	@Scheduled(fixedRate = 60 * 1000 * 60 * 6)
+	@Scheduled(cron="0 0/5 *  * * ?")
 	void scheduleUpdateJob() {
 		try {
-
+			System.out.println("start sche");
 			List<Marker> list = getMarkers();
 			LocalDateTime now = LocalDateTime.now();
 			for (Marker mark : list) {
@@ -115,7 +115,8 @@ public class MongoController {
 				LocalDateTime m = mark.getCurrentDate();
 				long diff = ChronoUnit.HOURS.between(now, m);
 
-				if (Math.abs(diff) >= 17) {
+				if (Math.abs(diff) >= 6) {
+					System.out.println("its bigger than 17");
 
 					String mark_id = mark.getId();
 					updateNavigate(mark_id, "window.google.maps.Animation.DROP");
@@ -123,6 +124,7 @@ public class MongoController {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 
 		}
 	}

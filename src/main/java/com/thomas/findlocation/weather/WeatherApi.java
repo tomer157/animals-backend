@@ -161,7 +161,7 @@ public class WeatherApi {
 	public static ClimateModel parseWith() throws InterruptedException {
 		BufferedReader reader;
 		String line;
-		String[] cities = { "Tel aviv", "Eilat", "ramat gan", "Rehovot", "qiryat shemona", "haifa", "nablus", "jericho",
+		String[] cities = { "Tel aviv", "Eilat", "ramat gan", "Rehovot", "qiryat shemona", "haifa", "caesarea	", "nablus", "jericho",
 				"netanya", "tiberias", "jerusalem", "beit she'an", "acre", "afula", "arad", "arraba", "ashdod",
 				"Ashkelon", "Baqa al-Gharbiyye", "Bat Yam", "Beersheba", "Beit Shemesh", "Bnei Brak", "Dimona", "El'ad",
 				"Giv'at Shmuel", "Givatayim", "Hadera", "Herzliya", "Hod HaSharon", "Holon", "Kafr Qasim", "Karmiel",
