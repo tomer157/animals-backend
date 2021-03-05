@@ -3,6 +3,7 @@ package com.thomas.findlocation.controllers;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -104,30 +105,37 @@ public class MongoController {
 		return hazardRepo.findAll();
 	}
 
-	@Scheduled(cron="0 0/5 *  * * ?")
+	@Scheduled(cron = "0 0/5 *  * * ?")
 	void scheduleUpdateJob() {
 		try {
-			System.out.println("start sche");
 			List<Marker> list = getMarkers();
 			LocalDateTime now = LocalDateTime.now();
+
+			if (now == null || list.isEmpty())
+				return;
+
 			for (Marker mark : list) {
 
 				LocalDateTime m = mark.getCurrentDate();
-				long diff = ChronoUnit.HOURS.between(now, m);
-
-				if (Math.abs(diff) >= 6) {
-					System.out.println("its bigger than 17");
-
+				Long diff = Duration.between(m, now).toMillis();
+				int hour = (int) (diff / (60 * 60 * 1000));
+				if (Math.abs(hour) >= 6) {
 					String mark_id = mark.getId();
 					updateNavigate(mark_id, "window.google.maps.Animation.DROP");
+				} else if (hour == 0) {
+					continue;
+				} else {
+					continue;
 				}
 			}
 
-		} catch (Exception e) {
+		} catch ( NullPointerException e) {
 			e.printStackTrace();
 
 		}
 	}
+	
+	
 
 	@RequestMapping(value = "/addrescue/{status}", method = RequestMethod.POST)
 	public RescueEntity saveRescue(@RequestBody RescueEntity dataRequest, @PathVariable("status") Status status,

@@ -40,19 +40,15 @@ public class WeatherApi {
 	private static List<TempObject> listTemp = new ArrayList<>();
 	private static List<TempObject> listTempMin = new ArrayList<>();
 
-	////////////////////// min_temp ,max //////cities with rain array
-//		public static Triplet<String, String, List<String>> tripletOne = new Triplet<String, String, List<String>>("", "",
-//		
+	
 	static JSONObject js = new JSONObject();
 
 	private static double firstMin_temp = 9.0;
 	private static double firstMax_temp = 30.0;
 	private static String selectedCity = null;
-	private static String population = null;
 	public static String city = "New York";
 	public static String cityName = null;
 
-//		public static StringBuffer responseContent = new StringBuffer();
 
 	public static void main(String[] args) throws InterruptedException {
 		parseWith();
@@ -68,7 +64,6 @@ public class WeatherApi {
 			JSONObject cityOBJ = jo.getJSONObject("city");
 
 			cityName = cityOBJ.get("name").toString();
-			population = cityOBJ.get("population").toString();
 
 			JSONArray listArray = jo.getJSONArray("list");
 			for (int i = 0; i < listArray.length(); i++) {
@@ -99,7 +94,6 @@ public class WeatherApi {
 				if (firstMax_temp < main.getDouble("temp_max")) {
 
 					selectedCity = cityName;
-					String pop = population;
 					double lat = (double) cityOBJ.getJSONObject("coord").get("lat");
 
 					double lng = (double) cityOBJ.getJSONObject("coord").get("lon");
@@ -152,10 +146,10 @@ public class WeatherApi {
 		} catch (Exception e) {
 			e.printStackTrace();
 
+		}finally {
+
+		  return climateModel;
 		}
-
-		return climateModel;
-
 	}
 
 	public static ClimateModel parseWith() throws InterruptedException {
