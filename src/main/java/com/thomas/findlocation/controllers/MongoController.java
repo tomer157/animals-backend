@@ -23,6 +23,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpMethod;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -104,7 +105,9 @@ public class MongoController {
 	public List<Hazard> getHazards() {
 		return hazardRepo.findAll();
 	}
-
+	
+	
+	@Async
 	@Scheduled(cron = "0 0/5 *  * * ?")
 	void scheduleUpdateJob() {
 		try {
